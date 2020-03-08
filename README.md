@@ -60,4 +60,8 @@ Ya finalizado. En la URL de Ngrok para HTTP puede ver un mapa interactivo con lo
 
 ***Cómo ya se mencionó el programa es demostrativo, pero no significa que no se pueda jugar con él.***
 
+### Imagen demostrativa:
+
+![](https://imgur.com/8fqPdx0.png)
+
 \~ DtxdF
