@@ -59,7 +59,7 @@ int insert_intoDB(sqlite3 * DB,
 	if (sqlite3_exec(DB, "CREATE TABLE IF NOT EXISTS router("
 									"id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 									"bssid TEXT NOT NULL,"
-									"ssid TEXT NOT NULl,"
+									"ssid TEXT NOT NULL,"
 									"frequency INTEGER NOT NULL,"
 									"signal INTEGER NOT NULL,"
 									"seen_ms_ago INTEGER NOT NULL,"

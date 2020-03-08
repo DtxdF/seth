@@ -66,6 +66,19 @@ class Handler(RequestHandler):
 class THandler(RequestHandler):
     def get(self):
         Map = folium.Map()
+        cursor.execute(''.join([
+                "CREATE TABLE IF NOT EXISTS router(",
+                "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,",
+                "bssid TEXT NOT NULL,",
+                "ssid TEXT NOT NULL,",
+                "frequency INTEGER NOT NULL,",
+                "signal INTEGER NOT NULL,",
+                "seen_ms_ago INTEGER NOT NULL,",
+                "status INTEGER NOT NULL,",
+                "registred TEXT NOT NULL,",
+                "location TEXT);"
+            
+            ]))
         cursor.execute('SELECT * FROM router;')
         result = cursor.fetchall()
         marks = {}
