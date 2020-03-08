@@ -64,4 +64,11 @@ Ya finalizado. En la URL de Ngrok para HTTP puede ver un mapa interactivo con lo
 
 ![](https://imgur.com/8fqPdx0.png)
 
+Tenga en cuenta que las técnicas antes mencionadas son mejores en grupo, por lo que existe una herramienta para "unir" todos los datos que no estén en otra. [db_join.py](db_join.py) nos va a permitir hacer eso, unir las direcciones no existentes para aumentar nuestra posibilidades.
+
+```bash
+python3 db_join.py <Base de datos a unir>
+...
+```
+
 \~ DtxdF
