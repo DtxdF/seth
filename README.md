@@ -62,7 +62,7 @@ Ya finalizado. En la URL de Ngrok para HTTP puede ver un mapa interactivo con lo
 
 ### Imagen demostrativa:
 
-![](https://imgur.com/8fqPdx0.png)
+![](https://imgur.com/ERj7bhA.png)
 
 Tenga en cuenta que las técnicas antes mencionadas son mejores en grupo, por lo que existe una herramienta para "unir" todos los datos que no estén en otra. [db_join.py](db_join.py) nos va a permitir hacer eso, unir las direcciones no existentes para aumentar nuestra posibilidades.
 
