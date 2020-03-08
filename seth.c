@@ -2,16 +2,18 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <signal.h>
 
 #include "sqlite3.h"
 #include "wifi_scan.h"
 #include "seth.h"
+#include "free_secure.h"
 
 char * get_current_location(sqlite3 * DB, char * buff, size_t limit) {
 	sqlite3_stmt * stmt;
 
-	float latitude;
-	float longitude;
+	const unsigned char * latitude;
+	const unsigned char * longitude;
 	
 	int result;
 	
@@ -22,10 +24,10 @@ char * get_current_location(sqlite3 * DB, char * buff, size_t limit) {
 	result = sqlite3_step(stmt);
 
 	if (result == SQLITE_ROW) {
-		latitude = sqlite3_column_double(stmt, 0);
-		longitude = sqlite3_column_double(stmt, 1);
+		latitude = sqlite3_column_text(stmt, 0);
+		longitude = sqlite3_column_text(stmt, 1);
 
-		snprintf(buff, limit, "%f,%f", latitude, longitude);
+		snprintf(buff, limit, "%s,%s", latitude, longitude);
 
 		return buff;
 
@@ -109,6 +111,7 @@ int main(int argc, char ** argv) {
 	
 	struct wifi_scan * wifi = wifi_scan_init(args.interface);
 	struct bss_info bss[args.bss_limit];
+	struct free_information free_info;
 	
 	char mac[BSSID_STRING_LENGTH];
 
@@ -116,6 +119,16 @@ int main(int argc, char ** argv) {
 	int sql_status;
 
 	sqlite3 * DB;
+
+	free_info.DB = DB;
+	free_info.wifi = wifi;
+
+	free_secure(&free_info);
+
+	signal(SIGINT, sig_secure);
+	signal(SIGTERM, sig_secure);
+	signal(SIGUSR1, sig_secure);
+	signal(SIGUSR2, sig_secure);
 
 	if (sqlite3_initialize() != SQLITE_OK) {
 		fprintf(stderr, "Error: %s\n", sqlite3_errmsg(DB));
