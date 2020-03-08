@@ -29,25 +29,17 @@ def get_status(code):
     else:
         return "Error!"
 
-def get_location(location_string, loc_list):
+def get_location(location_string, signal):
     global lat_or_lon
 
     (latitude, longitude) = location_string.split(',')
-
     latitude = float(latitude)
     longitude = float(longitude)
 
-    locations = [x for x in loc_list if (x == location_string)]
+    signal = (-1*signal) - 20
 
-    if (len(locations) > 1):
-        for _ in locations:
-            if (lat_or_lon == 0):
-                lat_or_lon = 0
-                latitude += float('0.000' + str(randint(10, 30)))
-
-            else:
-                lat_or_lon = 1
-                longitude -= float('0.000' + str(randint(10, 30)))
+    latitude += (signal / 100000)
+    longitude += (signal / 100000)
 
     return(latitude, longitude)
 
@@ -77,10 +69,6 @@ class THandler(RequestHandler):
         cursor.execute('SELECT * FROM router;')
         result = cursor.fetchall()
         marks = {}
-        loc_list = []
-
-        for _ in result:
-            loc_list.append(_[8])
 
         for _ in result:
             vendor = get_vendor(_[1][:8])
@@ -98,9 +86,10 @@ class THandler(RequestHandler):
             ]
 
             iframe = folium.IFrame('<br>'.join(html), width=300, height=200)
-            mark = folium.Marker(location=get_location(_[8], loc_list),
+            mark = folium.Marker(location=get_location(_[8], _[4]),
                                  popup=folium.Popup(iframe, max_width=300, sticky=True),
-                                 icon=folium.Icon(color='red', icon_color='white', icon='map-marker', prefix='fa'))
+                                 icon=folium.Icon(color='red', icon_color='white', icon='map-marker', prefix='fa'),
+                                 draggable=True)
             if (marks.get(vendor) == None):
                 marks[vendor] = []
             
