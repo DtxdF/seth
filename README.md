@@ -54,7 +54,7 @@ sudo ./program -i <Nombre de la interfaz de red> -s <El tiempo de espera para re
 
 Ya finalizado. En la URL de Ngrok para HTTP puede ver un mapa interactivo con los puntos de acceso capturado junto con su información. Por ejemplo: \<URL de Ngrok\>/tracked
 
-***Hay que tener en cuenta que el programa no registra la ubicación de los puntos de acceso, sino la ubicación en dónde se registros éstos. Es relativa según el GPS y la configuración del dispositivo.***
+***Hay que tener en cuenta que el programa no registra la ubicación de los puntos de acceso, sino la ubicación en dónde se registra éstos. Es relativa según el GPS y la configuración del dispositivo.***
 
 ***Otra cosa a tener en cuenta es que en el mapa interactivo para evitar la sobreposición de marcadores se coloca una ubicación imprecisa pero no muy lejos de donde se capturo, no obstante la información proporcionada al presionar en alguno de ellos sí muestra la real.***
 
