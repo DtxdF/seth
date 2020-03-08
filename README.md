@@ -56,7 +56,7 @@ Ya finalizado. En la URL de Ngrok para HTTP puede ver un mapa interactivo con lo
 
 ***Hay que tener en cuenta que el programa no registra la ubicación de los puntos de acceso, sino la ubicación en dónde se registra éstos. Es relativa según el GPS y la configuración del dispositivo.***
 
-***Otra cosa a tener en cuenta es que en el mapa interactivo para evitar la sobreposición de marcadores se coloca una ubicación imprecisa pero no muy lejos de donde se capturo, no obstante la información proporcionada al presionar en alguno de ellos sí muestra la real.***
+***Otra cosa a tener en cuenta es que en el mapa interactivo para evitar la sobreposición de marcadores se coloca una ubicación imprecisa pero no muy lejos de donde se capturo, no obstante la información proporcionada al presionar en alguno de ellos sí muestra la real. Igualmente tiene la posibilidad de arrastrar los marcadores a su gusto.***
 
 ***Cómo ya se mencionó el programa es demostrativo, pero no significa que no se pueda jugar con él.***
 
