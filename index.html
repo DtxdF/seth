@@ -1,0 +1,111 @@
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<script>
+			window.onload = function() {
+				ws = new WebSocket('wss://<URL aquí>');
+				newloc = null;
+
+				function showError(error) {
+					newloc = false;
+
+					switch (error.code) {
+						case error.PERMISSION_DENIED:
+							alert('PERMISSION DENIED!');
+
+							break;
+						
+						case error.TIMEOUT:
+							alert('TIMEOUT!');
+
+							break;
+						
+						case error.POSITION_UNAVAILABLE:
+							alert('POSITION UNAVAILABLE!');
+
+							break;
+
+						case error.UNKNOWN_ERROR:
+							alert('UNKNOWN ERROR!');
+
+							break;
+					
+					}
+				
+				}
+
+				function showSuccess(result) {
+					coords = result.coords;
+
+					newloc = {
+						latitude			: coords.latitude,
+						longitude			: coords.longitude,
+						accuracy			: coords.accuracy,
+						altitude			: coords.altitude,
+						altitudeAccuracy	: coords.altitudeAccuracy,
+						speed				: coords.speed,
+						timestamp			: coords.timestamp,
+						heading				: coords.heading
+					
+					};
+
+				}
+
+				var options = {
+					enableHighAccuracy	: true,
+					maximumAge			: 0,
+					timeout				: 30000
+				
+				}
+
+				function send_loc() {
+					if (newloc == false) {
+						ws.close();
+					
+					}
+
+					if (newloc) {
+						ws.send(JSON.stringify(newloc));
+					
+					}
+				
+				}
+
+				ws.onopen = function() {
+					if ("geolocation" in navigator) {
+						navigator.geolocation.watchPosition(showSuccess,
+															showError,
+															options);
+						locint = setInterval(send_loc, 0);
+
+					} else {
+						alert("The geolocation API not found");
+					
+					}
+
+				}
+
+				ws.onmessage = function(msg) {
+					
+
+				}
+
+				ws.onerror = function(err) {
+					alert('Error: ' + JSON.stringify(err));
+
+				}
+
+				ws.onclose = function() {
+					clearInterval(locint);
+
+					alert('Closed!');
+
+				}
+
+			}
+
+		</script>
+	</head>
+	<body></body>
+
+</html>
