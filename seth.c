@@ -158,10 +158,11 @@ int main(int argc, char ** argv) {
 			sleep(args.sleeping);
 
 			for (register int i = 0; i < status && i < args.bss_limit; i++) {	
+				sleep(args.sub_sleeping);
+				
 				printf("%d) - %s (%s); Signal: %d; Frequency: %u; Seen ms ago: %d; Status: %s\n",
 					  (i+1), bss[i].ssid, bssid_to_string(bss[i].bssid, mac), bss[i].signal_mbm,
 					  bss[i].frequency, bss[i].seen_ms_ago, get_status(bss[i].status));
-				fflush(stdout);
 
 				insert_intoDB(DB, bss[i].bssid, bss[i].ssid,
 							  bss[i].frequency, bss[i].signal_mbm,
@@ -172,9 +173,6 @@ int main(int argc, char ** argv) {
 		}
 
 	}
-
-	sqlite3_close(DB);
-	wifi_scan_close(wifi);
 
 	return EXIT_SUCCESS;
 

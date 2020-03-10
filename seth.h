@@ -14,6 +14,7 @@
 #define DB_NAME "scan.db"
 #define SLEEPING 1
 #define BSS_LIMIT 30
+#define SUB_SLEEPING 1
 
 // arguments of the command line
 
@@ -22,6 +23,7 @@ struct params {
 	char * db_name;
 	int sleeping;
 	int bss_limit;
+	int sub_sleeping;
 
 };
 
@@ -33,8 +35,9 @@ void get_params(int argc, char * argv[], struct params * args) {
 	args->db_name = DB_NAME;
 	args->sleeping = SLEEPING;
 	args->bss_limit = BSS_LIMIT;
+	args->sub_sleeping = SUB_SLEEPING;
 
-	while ((opt = getopt(argc, argv, "i:d:s:b:h")) != -1) {
+	while ((opt = getopt(argc, argv, "i:d:s:S:b:h")) != -1) {
 		switch(opt) {
 			case 'i':
 				args->interface = optarg;
@@ -52,16 +55,22 @@ void get_params(int argc, char * argv[], struct params * args) {
 				args->bss_limit = (int)strtol(optarg, &ptr, 10);
 				break;
 
+			case 'S':
+				args->sub_sleeping = (int)strtol(optarg, &ptr, 10);
+				break;
+
 			case 'h':
 				printf("Syntax: %s [OPTIONS] -i <Interface name>\n", argv[0]);
 				printf("\n");
 				printf("-i <Interface:str>     -     The interface name to listen the wifi networks.\n");
 				printf("-d <Database:str>      -     The database name to save the wifi network information. Default: %s\n",
 					   DB_NAME);
-				printf("-s <Interval:int>      -     The interval of times to listen the wifi networks. Default: %d\n",
+				printf("-s <Interval:int>      -     The interval of times to listen the wifi networks. Default: %u\n",
 					   SLEEPING);
-				printf("-b <BSS limit:int>     -     The BSS (Basic service set) limits. Default: %d\n",
+				printf("-b <BSS limit:int>     -     The BSS (Basic service set) limits. Default: %u\n",
 					   BSS_LIMIT);
+				printf("-S <Sub-Interval:int>  -     The sub-interval is the number used to one to one the wifi networks in the screen. Default: %d\n",
+				       SUB_SLEEPING);
 				printf("-h                     -     Show this text\n");
 				exit(1);
 
@@ -79,7 +88,7 @@ void get_params(int argc, char * argv[], struct params * args) {
 
 	}
 
-	if ((args->sleeping == 0) || (args->bss_limit == 0)) {
+	if ((args->sleeping <= 0) || (args->sub_sleeping <= 0) || (args->bss_limit <= 0)) {
 		fprintf(stderr, "%s: The value of a parameter requires an integer and greater than 0.\n", argv[0]);
 		exit(1);
 	

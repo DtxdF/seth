@@ -14,6 +14,8 @@ void free_secure(struct free_information * info) {
 	} else {
 		wifi_scan_close(free_info->wifi);
 		sqlite3_close(free_info->DB);
+
+		exit(0);
 	
 	}
 

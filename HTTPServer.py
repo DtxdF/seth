@@ -9,7 +9,6 @@ from random import randint
 LPORT = 8081
 db = sqlite3.connect('scan.db')
 cursor = db.cursor()
-lat_or_lon = 0
 
 def get_status(code):
     code = int(code)
@@ -30,16 +29,9 @@ def get_status(code):
         return "Error!"
 
 def get_location(location_string, signal):
-    global lat_or_lon
-
-    (latitude, longitude) = location_string.split(',')
+    (latitude, longitude) = location_string.strip().split(',')
     latitude = float(latitude)
     longitude = float(longitude)
-
-    signal = (-1*signal) - 20
-
-    latitude += (signal / 100000)
-    longitude += (signal / 100000)
 
     return(latitude, longitude)
 
@@ -65,7 +57,7 @@ class Handler(RequestHandler):
 
 class THandler(RequestHandler):
     def get(self):
-        Map = folium.Map()
+        bssid2loc = self.get_argument('target', None)
         cursor.execute(''.join([
                 "CREATE TABLE IF NOT EXISTS router(",
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,",
@@ -82,31 +74,42 @@ class THandler(RequestHandler):
         cursor.execute('SELECT * FROM router;')
         result = cursor.fetchall()
         marks = {}
+        Map = None
 
         for _ in result:
-            vendor = get_vendor(_[1][:8])
+            bssid = _[1]
+            vendor = get_vendor(bssid[:8])
+            location = get_location(_[8], _[4])
+            color_for_mark = 'red'
 
-            html = ['<h4>Information of {} ({})</h4>'.format(_[1], vendor),
+            if (bssid2loc == bssid):
+                Map = folium.Map(location=location)
+                color_for_mark = 'blue'
+
+            html = ['<h4>Information of {} ({})</h4>'.format(bssid, vendor),
                     '<strong>ID:</strong> {}'.format(_[0]),
-                    '<strong>BSSID:</strong> {}'.format(_[1]),
+                    '<strong>BSSID:</strong> {}'.format(bssid),
                     '<strong>SSID:</strong> {}'.format(_[2]),
                     '<strong>Frequency:</strong> {}'.format(_[3]),
                     '<strong>Signal:</strong> {}'.format(_[4]),
                     '<strong>Seen ms ago:</strong> {}'.format(_[5]),
                     '<strong>Status:</strong> {}'.format(_[6]),
                     '<strong>Registred:</strong> {}'.format(_[7]),
-                    '<strong>Location:</strong> {}'.format(_[8])
+                    '<strong>Location:</strong> {},{}'.format(*location)
             ]
 
             iframe = folium.IFrame('<br>'.join(html), width=300, height=200)
-            mark = folium.Marker(location=get_location(_[8], _[4]),
+            mark = folium.Marker(location=location,
                                  popup=folium.Popup(iframe, max_width=300, sticky=True),
-                                 icon=folium.Icon(color='red', icon_color='white', icon='map-marker', prefix='fa'),
+                                 icon=folium.Icon(color=color_for_mark, icon_color='white', icon='map-marker', prefix='fa'),
                                  draggable=True)
             if (marks.get(vendor) == None):
                 marks[vendor] = []
             
             marks[vendor].append(mark)
+
+        if not (Map):
+            Map = folium.Map()
 
         for i in marks:
             group_name = folium.FeatureGroup(name=i)
