@@ -163,7 +163,7 @@ int main(int argc, char ** argv) {
 				sleep(args.sub_sleeping);
 				
 				printf("%d) - %s (%s); Signal: %d; Frequency: %u; Seen ms ago: %d; Status: %s\n",
-					  (i+1), bss[i].ssid, bssid_to_string(bss[i].bssid, mac), bss[i].signal_mbm,
+					  (i+1), bss[i].ssid, bssid_to_string(bss[i].bssid, mac), bss[i].signal_mbm/100,
 					  bss[i].frequency, bss[i].seen_ms_ago, get_status(bss[i].status));
 
 				insert_intoDB(DB, bss[i].bssid, bss[i].ssid,
