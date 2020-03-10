@@ -10,8 +10,6 @@ sudo ./INSTALL
 ...
 ```
 
-**Nota: Es importante que no se borre la base de datos creada, ya que contiene el "Journal" desactivado. Lea la documentación de SQLITE para más información.**
-
 ## Uso
 Ejecutamos el servidor "**Web Sockets**"
 

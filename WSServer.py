@@ -10,6 +10,8 @@ LPORT = 8080
 db = sqlite3.connect('scan.db')
 cursor = db.cursor()
 
+cursor.execute('PRAGMA journal_mode = OFF;')
+
 def save_location(result):
     data = tuple(result.values())
 

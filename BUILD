@@ -37,8 +37,6 @@ if [ $option = "y" ];then
 
 fi
 
-sqlite3 $DB_NAME "PRAGMA journal_mode = OFF;"
-
 clear
 
 echo "Done."

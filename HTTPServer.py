@@ -10,6 +10,8 @@ LPORT = 8081
 db = sqlite3.connect('scan.db')
 cursor = db.cursor()
 
+cursor.execute('PRAGMA journal_mode = OFF;')
+
 def get_status(code):
     code = int(code)
 

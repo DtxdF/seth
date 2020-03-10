@@ -144,6 +144,8 @@ int main(int argc, char ** argv) {
 	
 	}
 
+	sqlite3_exec(DB, "PRAGMA journal_mode = OFF;", NULL, NULL, NULL);
+
 	while (true) {
 		status = wifi_scan_all(wifi, bss, args.bss_limit);
 
