@@ -12,14 +12,7 @@ fi
 
 # We Install dependencies
 
-apt-get install build-essential libmnl0 libmnl-dev python3 curl sqlite3
-
-# We Install dependencias for Python
-
-if [ -z $(which pip3) ];then
-	curl https://bootstrap.pypa.io/get-pip.py | python3
-
-fi
+apt-get install build-essential libmnl0 libmnl-dev python3 curl sqlite3 python3-pip
 
 # We install dependencies of the libraries
 
