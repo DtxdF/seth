@@ -12,7 +12,7 @@ fi
 
 # We Install dependencies
 
-apt-get install build-essential libmnl0 libmnl-dev python3 curl sqlite3 python3-pip
+apt-get install build-essential libmnl0 libmnl-dev python3 curl sqlite3 python3-pip python3-setuptools
 
 # We install dependencies of the libraries
 
