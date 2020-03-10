@@ -5,8 +5,8 @@
 ```bash
 git clone https://github.com/DtxdF/seth.git
 cd seth
-chmod +x INSTALL
-sudo ./INSTALL
+chmod +x BUILD
+sudo ./BUILD
 ...
 ```
 
@@ -24,7 +24,7 @@ sudo python3 HTTPServer.py
 ...
 ```
 
-Es mejor si hacemos *«Port forwarding»* con **Ngrok** por ejemplo, para obtener el HTTPS, pero existe la posibilidad de usar una clave y un certificado arbitratrio si así se desea (**NO RECOMENDABLE**), pero es mejor que se use la primera opción que la segunda debído a que es posible que algunos navegadores (**los más usados**) no permitan usar la geolocalización del dispositivo en un contexto no seguro (**HTTP**).
+Es mejor si hacemos *«Port forwarding»* con **Ngrok** por ejemplo, para obtener el **HTTPS**, pero existe la posibilidad de usar una clave y un certificado arbitratrio si así se desea (**NO RECOMENDABLE**), pero es mejor que se use la primera opción que la segunda debído a que es posible que algunos navegadores no permitan usar la geolocalización del dispositivo en un contexto no seguro, cómo **HTTP** ó clave y certificado no válidos.
 
 ```bash
 ./ngrok http 8080 # WebSocket
@@ -54,15 +54,17 @@ Ya finalizado. En la URL de Ngrok para HTTP puede ver un mapa interactivo con lo
 
 ***Hay que tener en cuenta que el programa no registra la ubicación de los puntos de acceso, sino la ubicación en dónde se registra éstos. Es relativa según el GPS y la configuración del dispositivo.***
 
-***Otra cosa a tener en cuenta es que en el mapa interactivo para evitar la sobreposición de marcadores se coloca una ubicación imprecisa pero no muy lejos de donde se capturo, no obstante la información proporcionada al presionar en alguno de ellos sí muestra la real. Igualmente tiene la posibilidad de arrastrar los marcadores a su gusto.***
+***Puede que haya un registro en dónde los puntos de acceso se superpongan, pero puede mover esos marcadores a su gusto.***
 
 ***Cómo ya se mencionó el programa es demostrativo, pero no significa que no se pueda jugar con él.***
 
 ### Imagen demostrativa:
 
-![](https://imgur.com/ERj7bhA.png)
+![](https://imgur.com/BEJZbPL.png)
 
-Tenga en cuenta que las técnicas antes mencionadas son mejores en grupo, por lo que existe una herramienta para "unir" todos los datos que no estén en otra. [db_join.py](db_join.py) nos va a permitir hacer eso, unir las direcciones no existentes para aumentar nuestra posibilidades.
+**Nota: Puede usar un parámetro GET llamado "*target*" para mostrar la ubicación de un BSSID que esté en la base de datos. Ejemplo: URL/tracked?target=\<BSSID\>**
+
+Tenga en cuenta que las técnicas antes mencionadas son mejores en grupo, por lo que existe una herramienta para "unir" todos los datos que no estén en otra. [db_join.py](db_join.py) nos va a permitir hacer eso, unir las direcciones no existentes para aumentar nuestras posibilidades.
 
 ```bash
 python3 db_join.py <Base de datos a unir>
