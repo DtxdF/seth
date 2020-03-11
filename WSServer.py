@@ -7,13 +7,11 @@ from tornado.ioloop import IOLoop
 from json import loads
 
 LPORT = 8080
-db = sqlite3.connect('scan.db')
-cursor = db.cursor()
-
-cursor.execute('PRAGMA journal_mode = OFF;')
 
 def save_location(result):
     data = tuple(result.values())
+    db = sqlite3.connect('scan.db', timeout=5)
+    cursor = db.cursor()
 
     try:
         cursor.execute('CREATE TABLE current_location(id INTEGER PRIMARY KEY AUTOINCREMENT, latitude INTEGER NOT NULL, longitude INTEGER NOT NULL, accuracy INTEGER, altitude INTEGER, altitudeAccuracy INTEGER, speed INTEGER, heading INTEGER, registred TEXT NOT NULL);')
@@ -26,7 +24,9 @@ def save_location(result):
         db.commit()
 
     except Exception as Except:
-        pass
+        print(Except)
+
+    db.close()
 
 class WSHandler(WebSocketHandler):
     def check_origin(self, origin):
@@ -64,4 +64,4 @@ try:
     IOLoop().current().start()
 
 except KeyboardInterrupt:
-    db.close()
+    pass

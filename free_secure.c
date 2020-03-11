@@ -1,19 +1,16 @@
 #include <signal.h>
-#include <stddef.h>
+#include <stdlib.h>
 
 #include "wifi_scan.h"
-#include "sqlite3.h"
-#include "free_secure.h"
 
-void free_secure(struct free_information * info) {
-	static struct free_information * free_info;
+void free_secure(struct wifi_scan * wifi) {
+	static struct wifi_scan * wifi2free = NULL;
 
-	if (info != NULL) {
-		free_info = info;
+	if (wifi != NULL) {
+		wifi2free = wifi;
 	
 	} else {
-		wifi_scan_close(free_info->wifi);
-		sqlite3_close(free_info->DB);
+		wifi_scan_close(wifi2free);
 
 		exit(0);
 	

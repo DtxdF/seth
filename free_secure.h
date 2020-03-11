@@ -1,16 +1,9 @@
 #ifndef _FREE_SECURE_H
 #define _FREE_SECURE_H
 
-#include "sqlite3.h"
 #include "wifi_scan.h"
 
-struct free_information {
-	struct wifi_scan * wifi;
-	struct sqlite3 * DB;
-
-};
-
-void free_secure(struct free_information * info);
+void free_secure(struct wifi_scan * wifi);
 void sig_secure(int signum);
 
 #endif

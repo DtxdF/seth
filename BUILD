@@ -30,6 +30,8 @@ if [ $option = "y" ];then
 
 fi
 
+sqlite3 $DB_NAME "PRAGMA journal_mode = WAL;"
+
 clear
 
 echo "Done."

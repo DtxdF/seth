@@ -7,10 +7,8 @@ from tornado.ioloop import IOLoop
 from random import randint
 
 LPORT = 8081
-db = sqlite3.connect('scan.db')
+db = sqlite3.connect('scan.db', timeout=5)
 cursor = db.cursor()
-
-cursor.execute('PRAGMA journal_mode = OFF;')
 
 def get_status(code):
     code = int(code)
@@ -95,7 +93,7 @@ class THandler(RequestHandler):
                     '<strong>Frequency:</strong> {}'.format(_[3]),
                     '<strong>Signal:</strong> {}'.format(_[4]),
                     '<strong>Seen ms ago:</strong> {}'.format(_[5]),
-                    '<strong>Status:</strong> {}'.format(_[6]),
+                    '<strong>Status:</strong> {}'.format(get_status(_[6])),
                     '<strong>Registred:</strong> {}'.format(_[7]),
                     '<strong>Location:</strong> {},{}'.format(*location)
             ]

@@ -111,42 +111,31 @@ int main(int argc, char ** argv) {
 	
 	struct wifi_scan * wifi = wifi_scan_init(args.interface);
 	struct bss_info bss[args.bss_limit];
-	struct free_information free_info;
 	
 	char mac[BSSID_STRING_LENGTH];
 
 	int status;
 	int sql_status;
 
-	sqlite3 * DB;
-
-	free_info.DB = DB;
-	free_info.wifi = wifi;
-
-	free_secure(&free_info);
+	free_secure(wifi);
 
 	signal(SIGINT, sig_secure);
 	signal(SIGTERM, sig_secure);
 	signal(SIGUSR1, sig_secure);
 	signal(SIGUSR2, sig_secure);
 
-	if (sqlite3_initialize() != SQLITE_OK) {
-		fprintf(stderr, "Error: %s\n", sqlite3_errmsg(DB));
-
-		return EXIT_FAILURE;
-	
-	}
-
-	if ((sql_status = sqlite3_open(args.db_name, &DB) != SQLITE_OK)) {
-		fprintf(stderr, "Error: %s\n", sqlite3_errmsg(DB));
-
-		return EXIT_FAILURE;
-	
-	}
-
-	sqlite3_exec(DB, "PRAGMA journal_mode = OFF;", NULL, NULL, NULL);
-
 	while (true) {
+		sqlite3 * DB;
+		
+		if ((sql_status = sqlite3_open(args.db_name, &DB) != SQLITE_OK)) {
+			fprintf(stderr, "Error: %s\n", sqlite3_errmsg(DB));
+
+			return EXIT_FAILURE;
+		
+		}
+
+		sqlite3_busy_timeout(DB, 5);
+
 		status = wifi_scan_all(wifi, bss, args.bss_limit);
 
 		if (status < 0) {
@@ -173,6 +162,8 @@ int main(int argc, char ** argv) {
 			}
 
 		}
+
+		sqlite3_close(DB);
 
 	}
 
