@@ -1,2 +1,2 @@
 folium==0.10.1
-tornado==6.3.2
+tornado==6.3.3
